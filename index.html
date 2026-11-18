@@ -18,10 +18,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- ============ Tailwind CSS (CDN) ============ -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    /* Tailwind config must be defined before the CDN script loads. Colors map to CSS variables so both themes share one set of utilities. */
-    window.tailwind = window.tailwind || {};
-    window.tailwind.config = {
+    /* Tailwind config is applied after the CDN loads; skipped gracefully if the CDN is unavailable. Colors map to CSS variables so both themes share one set of utilities. */
+    if (window.tailwind) tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
@@ -42,7 +42,6 @@
       },
     };
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     /* Apply saved theme as early as possible to avoid a flash of the wrong theme. */
     (function () {
@@ -283,9 +282,6 @@
       </ul>
 
       <div class="flex items-center gap-2">
-        <a href="#" class="btn btn-ghost hidden-config resume-link !hidden sm:!inline-flex" style="padding:.55rem 1rem;font-size:.85rem" download data-resume>
-          <svg class="icon icon-sm"><use href="#i-download"/></svg> Resume
-        </a>
         <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch to light theme">
           <svg class="icon icon-sun"><use href="#i-sun"/></svg>
           <svg class="icon icon-moon"><use href="#i-moon"/></svg>
@@ -305,11 +301,6 @@
         <li><a class="nav-link block py-2.5" href="#projects">Projects</a></li>
         <li><a class="nav-link block py-2.5" href="#education">Education</a></li>
         <li><a class="nav-link block py-2.5" href="#contact">Contact</a></li>
-        <li class="hidden-config" data-resume-item>
-          <a href="#" class="btn btn-ghost mt-2 w-full" download data-resume>
-            <svg class="icon icon-sm"><use href="#i-download"/></svg> Download Resume
-          </a>
-        </li>
       </ul>
     </div>
   </header>
@@ -438,6 +429,18 @@
             </div>
           </div>
 
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center" aria-label="Career progression: .NET Developer Intern to Software Engineer">
+            <div class="flex items-center gap-3 rounded-xl border border-line bg-bg/60 px-4 py-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-muted">Dec 2024</span>
+              <span class="font-medium">.NET Developer Intern</span>
+            </div>
+            <svg class="icon mx-auto rotate-90 text-accent sm:mx-0 sm:rotate-0" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+            <div class="flex items-center gap-3 rounded-xl border px-4 py-3" style="border-color:rgb(var(--c-accent)/.45);background:rgb(var(--c-accent)/.08)">
+              <span class="text-xs font-semibold uppercase tracking-wider text-accent">Apr 2025</span>
+              <span class="font-medium">Software Engineer</span>
+            </div>
+          </div>
+
           <ol class="timeline mt-8 space-y-8" style="list-style:none;margin-bottom:0">
             <!-- Position 2: Software Engineer -->
             <li class="relative">
@@ -446,7 +449,7 @@
                 <div class="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h4 class="font-display text-lg font-bold">Software Engineer</h4>
-                    <p class="m-0 text-sm text-muted">Full-time</p>
+                    <p class="m-0 text-sm text-muted">Full-time · Current role</p>
                   </div>
                   <span class="chip" style="color:rgb(var(--c-accent));border-color:rgb(var(--c-accent)/.4)">April 2025 – Present</span>
                 </div>
@@ -470,18 +473,21 @@
               </div>
             </li>
 
-            <!-- Position 1: Intern -->
+            <!-- Position 1: .NET Developer Intern -->
             <li class="relative">
               <span class="timeline-node past" aria-hidden="true"></span>
               <div class="rounded-xl border border-line bg-bg/60 p-5 sm:p-6">
                 <div class="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h4 class="font-display text-lg font-bold">Software Engineer Intern</h4>
-                    <p class="m-0 text-sm text-muted">Internship</p>
+                    <h4 class="font-display text-lg font-bold">.NET Developer Intern</h4>
+                    <p class="m-0 text-sm text-muted">Internship · Continued as Software Engineer</p>
                   </div>
                   <span class="chip">December 2024 – March 2025</span>
                 </div>
-                <p class="mt-4 text-muted">Started my professional software engineering journey as an intern, gaining practical experience in enterprise application development, .NET technologies, database operations and business application workflows.</p>
+                <p class="mt-4 text-muted">Started my professional journey as a .NET Developer Intern, gaining practical experience in enterprise application development, .NET technologies, database operations and business application workflows.</p>
+                <div class="mt-5 flex flex-wrap gap-2">
+                  <span class="chip">C#</span><span class="chip">.NET Framework</span><span class="chip">SQL Server</span>
+                </div>
               </div>
             </li>
           </ol>
@@ -567,7 +573,7 @@
 
         <form id="contact-form" class="reveal card p-6 sm:p-8" novalidate>
           <!-- Web3Forms required/optional hidden fields -->
-          <input type="hidden" name="access_key" id="w3f-key" value="f1f673fc-2bfa-47da-a4f6-d50077c1c583" />
+          <input type="hidden" name="access_key" id="w3f-key" value="YOUR_WEB3FORMS_ACCESS_KEY" />
           <input type="hidden" name="from_name" value="Royce Vaz Portfolio" />
           <!-- Honeypot spam protection (Web3Forms) -->
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
@@ -769,7 +775,6 @@
       $$('[data-resume]').forEach((a) => {
         if (hasResume) a.href = CONFIG.resumePath;
         a.classList.toggle('hidden-config', !hasResume);
-        a.classList.toggle('!hidden', !hasResume);
       });
       $$('[data-resume-item]').forEach((li) => li.classList.toggle('hidden-config', !hasResume));
 
